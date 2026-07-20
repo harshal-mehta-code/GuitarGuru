@@ -6,9 +6,14 @@ const Views = {};
 // Context linking a trainer session back to a curriculum activity: {day, idx} or null.
 let ActivityCtx = null;
 let activeScheduler = null; // any running metronome/strum/song scheduler — stopped on nav
+let liveTimers = [];        // setInterval ids owned by the current view
+function trackTimer(id) { liveTimers.push(id); return id; }
 
 function stopActive() {
   if (activeScheduler) { activeScheduler.stop(); activeScheduler = null; }
+  liveTimers.forEach(clearInterval);
+  liveTimers = [];
+  if (Views.changes._keyHandler) { document.removeEventListener('keydown', Views.changes._keyHandler); Views.changes._keyHandler = null; }
   Audio.stopTuner();
 }
 
@@ -156,14 +161,14 @@ Views.day = {
     let left = minutes * 60;
     el.innerHTML = `<div class="timer-big">${fmtTime(left)}</div>`;
     card.appendChild(el);
-    const iv = setInterval(() => {
+    const iv = trackTimer(setInterval(() => {
       left--;
       if (left <= 0) {
         clearInterval(iv);
         State.completeActivity(day, i);
         App.render();
       } else el.querySelector('.timer-big').textContent = fmtTime(left);
-    }, 1000);
+    }, 1000));
   },
   wire() {},
 };
@@ -488,7 +493,7 @@ Views.strum = {
       activeScheduler.start();
       btn.textContent = '⏸ Stop';
       elapsed = 0;
-      timerIv = setInterval(() => {
+      timerIv = trackTimer(setInterval(() => {
         elapsed++;
         const t = document.getElementById('s-timer');
         if (!t) { clearInterval(timerIv); return; }
@@ -497,7 +502,7 @@ Views.strum = {
           t.textContent = left > 0 ? '⏱ ' + fmtTime(left) + ' to go' : '';
           if (left <= 0) { stopStrum(); State.addXP(5, 'Strum practice'); if (ActivityCtx) completeCtx(); }
         } else t.textContent = '⏱ ' + fmtTime(elapsed);
-      }, 1000);
+      }, 1000));
     };
   },
 };
@@ -568,7 +573,7 @@ Views.changes = {
       startBtn.style.display = 'none';
       countEl.style.display = ''; countEl.textContent = '3';
       let cd = 3;
-      const cdIv = setInterval(() => {
+      const cdIv = trackTimer(setInterval(() => {
         cd--;
         if (cd > 0) { countEl.textContent = cd; Audio.click(Audio.ac().currentTime, false); }
         else {
@@ -576,14 +581,14 @@ Views.changes = {
           Audio.click(Audio.ac().currentTime, true);
           running = true; countEl.textContent = '0';
           tapBtn.style.display = '';
-          iv = setInterval(() => {
+          iv = trackTimer(setInterval(() => {
             left--;
             timerEl.textContent = '⏱ ' + left + 's';
             if (left <= 10 && left > 0) Audio.click(Audio.ac().currentTime, false);
             if (left <= 0) finish();
-          }, 1000);
+          }, 1000));
         }
-      }, 800);
+      }, 800));
     };
   },
 };
