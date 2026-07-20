@@ -25,21 +25,23 @@ beginner. Goal: casually playing guitar in 30 days. Deployed to a public URL.
 
 ## Feature checklist
 - [x] Plan + repo docs
-- [ ] Curriculum data (30 days, 4 phases, activities w/ tool deep-links)
-- [ ] Chord library data (~17 chords) + SVG diagrams + synthesized chord playback
-- [ ] Songs (10 traditional/public-domain, chord charts + play-along)
-- [ ] Tuner (getUserMedia + autocorrelation, needs HTTPS — Pages is HTTPS)
-- [ ] Metronome (40–200 bpm, 4/4 3/4 6/8, accent, visual pulse)
-- [ ] Strumming trainer (patterns synced to metronome)
-- [ ] One-minute chord change trainer (tap counting, personal bests, targets)
-- [ ] Gamification: XP, 12 levels, streaks (+freeze), 24 achievements, daily quests
-- [ ] Quizzes (days 7/14/21/28/30)
-- [ ] Progress persistence + export/import
+- [x] Curriculum data (30 days, 4 phases, activities w/ tool deep-links)
+- [x] Chord library data (18 chords) + SVG diagrams + synthesized chord playback
+- [x] Songs (10 traditional/public-domain, chord charts + play-along)
+- [x] Tuner (getUserMedia + autocorrelation, needs HTTPS — Pages is HTTPS)
+- [x] Metronome (40–200 bpm, 4/4 3/4 6/8, accent, visual pulse)
+- [x] Strumming trainer (patterns synced to metronome)
+- [x] One-minute chord change trainer (tap counting, personal bests, targets)
+- [x] Gamification: XP, 12 levels, streaks (+freeze), 24 achievements, daily quests
+- [x] Quizzes (days 7/14/21/28/30)
+- [x] Progress persistence + export/import
 - [ ] Deploy workflow + Pages live
-- [ ] Smoke-tested in headless Chromium
+- [x] Smoke-tested in headless Chromium
 
-## Status: IN PROGRESS
-Nothing deployed yet. Follow the checklist top to bottom.
+## Status: App complete & pushed; verifying Pages deploy
+Note: the push event did NOT auto-trigger the workflow (proxy-pushed commits may not fire
+push events) — triggered manually via workflow_dispatch instead. If future pushes don't
+deploy, run the "Deploy to GitHub Pages" workflow manually on the branch.
 
 ## If resuming
 1. `git fetch origin claude/gamified-guitar-learning-app-kfs72s` and check out.
