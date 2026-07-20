@@ -9,9 +9,12 @@ beginner. Goal: casually playing guitar in 30 days. Deployed to a public URL.
 ## Deployment target
 - **URL:** https://harshal-mehta-code.github.io/GuitarGuru/
 - Repo: `harshal-mehta-code/GuitarGuru` (public), branch `claude/gamified-guitar-learning-app-kfs72s`
-- Deploy: GitHub Actions workflow `.github/workflows/deploy.yml` → GitHub Pages
-  (uses `actions/configure-pages@v5` with `enablement: true` to auto-enable Pages).
-  Triggers on push to the branch above.
+- Deploy: classic GitHub Pages serving the `gh-pages` branch. Pushing `gh-pages`
+  auto-enabled Pages and triggers the built-in "pages build and deployment" run.
+  To ship updates: `git push origin <branch>:gh-pages` (also mirror to `main`).
+  An Actions-based deploy workflow was tried first but its runs hit
+  `startup_failure` twice (repo initially had no default branch; Actions was flaky),
+  so it was removed in favor of the classic path, which is verified working.
 
 ## Architecture (no build step, plain static files)
 - `index.html` — app shell, all views mounted by JS
@@ -35,13 +38,18 @@ beginner. Goal: casually playing guitar in 30 days. Deployed to a public URL.
 - [x] Gamification: XP, 12 levels, streaks (+freeze), 24 achievements, daily quests
 - [x] Quizzes (days 7/14/21/28/30)
 - [x] Progress persistence + export/import
-- [ ] Deploy workflow + Pages live
+- [x] Pages live (classic gh-pages branch deployment)
 - [x] Smoke-tested in headless Chromium
 
-## Status: App complete & pushed; verifying Pages deploy
-Note: the push event did NOT auto-trigger the workflow (proxy-pushed commits may not fire
-push events) — triggered manually via workflow_dispatch instead. If future pushes don't
-deploy, run the "Deploy to GitHub Pages" workflow manually on the branch.
+## Status: COMPLETE — deployed and verified
+- Live: https://harshal-mehta-code.github.io/GuitarGuru/ ("pages build and deployment"
+  run succeeded; deploy job green). The runtime container cannot reach github.io
+  directly (egress policy), so liveness was confirmed via the successful Pages
+  deployment run, not a direct fetch.
+- Backup copy (single-file build of the same app) published as a Claude artifact:
+  https://claude.ai/code/artifact/79860964-d0fe-4856-9f84-441db30ee0da
+- Branches `claude/gamified-guitar-learning-app-kfs72s` (development), `main` and
+  `gh-pages` (deploy) all point at the same content — keep them in sync.
 
 ## If resuming
 1. `git fetch origin claude/gamified-guitar-learning-app-kfs72s` and check out.

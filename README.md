@@ -30,8 +30,9 @@ Works on phone, tablet, and desktop. Best experienced on your phone, propped nex
 ## Tech
 
 Plain HTML/CSS/JS — zero dependencies, zero build step. Web Audio API for the metronome,
-chord synthesis (Karplus-Strong), and tuner. Deployed via GitHub Actions to GitHub Pages
-(`.github/workflows/deploy.yml`).
+chord synthesis (Karplus-Strong), and tuner. Deployed with classic GitHub Pages from the
+`gh-pages` branch — to ship an update, push the new code to `gh-pages` and GitHub
+rebuilds the site automatically.
 
 Run locally: any static server, e.g. `python3 -m http.server` then open
 http://localhost:8000. (The tuner needs HTTPS or localhost for mic access.)
